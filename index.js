@@ -23,6 +23,8 @@ Translator.configure();
 // Error Handler
 app.use(ErrorHandler.handle);
 
+console.log(dbConfig);
+
 // Set up database
 Mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`, {
     user: dbConfig.user,
