@@ -13,10 +13,10 @@ describe('Auth', () => {
         Chai.request(App)
             .post('/api/auth/register')
             .send({
-                username: `testing1@company.com`,
+                username: `init@company.com`,
                 password: 'abc123',
             })
-            .end((err, res) => {
+            .end(() => {
                 done();
             });
     });
@@ -28,6 +28,10 @@ describe('Auth', () => {
                 done();
             })
             .catch(() => done());
+    });
+
+    after(() => {
+        process.exit();
     });
 
     it('[200] - Register -> Success', (done) => {
