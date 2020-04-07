@@ -1,4 +1,4 @@
-import { dbConfig } from './server/config';
+import { dbConfig, env } from './server/config';
 import Express from 'express';
 import Helmet from 'helmet';
 import BodyParser from 'body-parser';
@@ -23,6 +23,8 @@ Translator.configure();
 // Error Handler
 app.use(ErrorHandler.handle);
 
+console.log(dbConfig);
+
 // Set up database
 Mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`, {
     user: dbConfig.user,
@@ -31,5 +33,6 @@ Mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.databas
     useUnifiedTopology: true,
     useFindAndModify: false,
 });
+Mongoose.set('debug', env === 'development');
 
 module.exports = app;

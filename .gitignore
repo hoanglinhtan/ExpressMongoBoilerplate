@@ -30,3 +30,4 @@ dist/
 
 # app configuration
 server/config/*.json
+server/config/*.key

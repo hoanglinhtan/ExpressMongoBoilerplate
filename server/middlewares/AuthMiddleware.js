@@ -1,22 +1,23 @@
 import JwtHelper from '../helpers/JwtHelper';
 import ResponseHelper from '../helpers/ResponseHelper';
-import { HttpConfig } from '../config';
 import { tokenRepository } from '../repositories';
 
 const verifyToken = async (req, res, next) => {
     try {
-        const token = req.header(HttpConfig.HEADER.TOKEN);
-        if (!token) {
+        const accessToken = JwtHelper.getToken(req);
+        if (!accessToken) {
             throw new Error('TOKEN_NOT_FOUND_ERROR');
         } else {
-            const decodeToken = JwtHelper.verifyToken(token, lang);
-            const user = await tokenRepository.getUser({
+            const decodeToken = JwtHelper.verifyToken(accessToken);
+            const savedToken = await tokenRepository.getToken({
                 userId: decodeToken.uid,
-                token,
+                accessToken,
             });
-            if (!user) {
+            if (!savedToken) {
                 throw new Error('USER_NOT_FOUND_ERROR');
             } else {
+                req.userId = decodeToken.uid;
+                req.accessToken = accessToken;
                 return next();
             }
         }

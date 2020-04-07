@@ -2,7 +2,6 @@ import { whiteListConfig } from '../config';
 import Cors from 'cors';
 import BodyParser from 'body-parser';
 import Morgan from 'morgan';
-import Superman from 'lodash';
 import ResponseHelper from '../helpers/ResponseHelper';
 
 class MiddlewareIndex {
@@ -18,12 +17,8 @@ class MiddlewareIndex {
                     const ip = req.ip.replace('::ffff:', '');
                     if (
                         !(
-                            Superman.find(whiteListConfig.whiteList, (o) => {
-                                return o == org;
-                            }) ||
-                            Superman.find(whiteListConfig.whiteList, (o) => {
-                                return o == ip;
-                            })
+                            whiteListConfig.whiteList.find((o) => o === org) ||
+                            whiteListConfig.whiteList.find((o) => o == ip)
                         )
                     ) {
                         return ResponseHelper.sendError(res, new Error('FORBIDDEN'));

@@ -1,7 +1,16 @@
 {
-    "host": "127.0.0.1",
-    "port": "27017",
-    "database": "",
-    "user": "",
-    "pass": ""
+    "development": {
+        "port": 27017,
+        "database": "event-db-dev",
+        "host": "127.0.0.1",
+        "user": "",
+        "pass": ""
+    },
+    "test": {
+        "port": 27017,
+        "database": "event-db-test",
+        "host": "127.0.0.1",
+        "user": "",
+        "pass": ""
+    }
 }

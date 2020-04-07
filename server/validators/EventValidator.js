@@ -1,11 +1,9 @@
-import Superman from 'lodash';
 import Joi from 'joi';
 import ResponseHelper from '../helpers/ResponseHelper';
 
 export default class EventValidator {
     validateCreateEvent = ({ body }, res, next) => {
-        const data = Superman.pick(body, []);
-        const result = Joi.object({}).validate(data);
+        const result = Joi.object({}).validate(body);
         if (result.error) {
             ResponseHelper.sendError(res, result.error.message);
         }
@@ -13,8 +11,7 @@ export default class EventValidator {
     };
 
     validateUpdateEvent = ({ body }, res, next) => {
-        const data = Superman.pick(body, []);
-        const result = Joi.object({}).validate(data);
+        const result = Joi.object({}).validate(body);
         if (result.error) {
             return ResponseHelper.sendError(res, result.error.message);
         }
