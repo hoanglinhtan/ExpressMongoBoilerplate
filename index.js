@@ -1,4 +1,4 @@
-import { dbConfig } from './server/config';
+import { dbConfig, env } from './server/config';
 import Express from 'express';
 import Helmet from 'helmet';
 import BodyParser from 'body-parser';
@@ -31,6 +31,6 @@ Mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.databas
     useUnifiedTopology: true,
     useFindAndModify: false,
 });
-Mongoose.set('debug', true);
+Mongoose.set('debug', env === 'development');
 
 module.exports = app;

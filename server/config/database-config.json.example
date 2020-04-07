@@ -1,7 +1,10 @@
 {
-    "host": "127.0.0.1",
-    "port": "27017",
-    "database": "",
-    "user": "",
-    "pass": ""
+    "development": {
+        "port": 27017,
+        "database": "admin"
+    },
+    "test": {
+        "port": 27017,
+        "database": "test"
+    }
 }

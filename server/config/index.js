@@ -1,8 +1,8 @@
 import DotENV from 'dotenv';
+DotENV.config();
+
 import Path from 'path';
 import FS from 'fs-extra';
-
-DotENV.config();
 
 const dbConfig = FS.readJsonSync(Path.resolve(__dirname, 'database-config.json'));
 
@@ -22,13 +22,15 @@ const JWT_KEY = FS.readFileSync(Path.resolve(__dirname, 'credentials', 'JWT.KEY'
     encoding: 'utf-8',
 });
 
+const env = process.env.NODE_ENV;
+
 module.exports = {
     port: process.env.PORT,
-    env: process.env.NODE_ENV,
+    env,
     loggerConfig: FS.readJsonSync(Path.resolve(__dirname, 'logger-config.json')),
     authConfig: FS.readJsonSync(Path.resolve(__dirname, 'auth-config.json')),
     dbConfig: {
-        ...dbConfig,
+        ...dbConfig[env],
         host: DB_HOST,
         user: DB_USER,
         pass: DB_PASS,
