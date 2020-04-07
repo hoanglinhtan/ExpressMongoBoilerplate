@@ -1,22 +1,30 @@
-import AppLogger from '../helpers/AppLogger';
-import Token from '../models/Token';
+import TokenModel from '../models/Token';
 
 export class TokenRepository {
     /**
      * Create Access Token
-     * @param {*} {  }
-     * @returns {*} {  }
+     * @param {Token} { userId, token }
+     * @return {Token} { userId, token }
      */
-    create = () => {
-        return {};
-    };
+    async create(data) {
+        return await TokenModel.create(data);
+    }
 
     /**
-     * Get User
-     * @param {*} {  }
-     * @returns {*} {  }
+     * Get Token
+     * @param {*} { condition, isLean }
+     * @return {Token} { token, userId }
      */
-    getUser = () => {
-        return {};
-    };
+    async getToken(condition, isLean = true) {
+        return await TokenModel.findOne(condition).lean(isLean);
+    }
+
+    /**
+     * Delete Token
+     * @param {*} { condition }
+     * @return {Boolean}
+     */
+    async deleteToken(condition) {
+        return await TokenModel.deleteOne(condition);
+    }
 }

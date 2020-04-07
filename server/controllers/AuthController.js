@@ -1,4 +1,3 @@
-import Superman from 'lodash';
 import Moment from 'moment';
 import JwtHelper from '../helpers/JwtHelper';
 import ResponseHelper from '../helpers/ResponseHelper';
@@ -13,17 +12,17 @@ export default class AuthController {
      */
     register = async (req, res) => {
         try {
-            const { email, username, password } = req.body;
-            const checkUser = await userRepository.getUser({ condition: { email } });
-            if (checkUser) {
+            const { username, password } = req.body;
+            const existedUser = await userRepository.getUser({ username });
+            if (existedUser) {
                 throw Error('EMAIL_EXISTED_ERROR');
             }
             const user = await userRepository.create({
-                email,
                 username,
                 password,
             });
-            return ResponseHelper.sendSuccess(res, Superman.omit(user, ['password']));
+            delete user.password;
+            return ResponseHelper.sendSuccess(res, user);
         } catch (e) {
             return ResponseHelper.sendError(res, e);
         }
@@ -42,14 +41,28 @@ export default class AuthController {
 
             const accessToken = JwtHelper.generateToken(user, authConfig.accessTokenLifetime);
 
-            await tokenRepository.save({
+            await tokenRepository.create({
                 userId: user.id,
                 username: user.username,
                 accessToken,
                 expireAt: Moment().add(authConfig.accessTokenLifetime),
             });
 
-            return ResponseHelper.sendSuccess(res, { ...user, accessToken });
+            return ResponseHelper.sendSuccess(res, { accessToken, ...user });
+        } catch (e) {
+            return ResponseHelper.sendError(res, e);
+        }
+    };
+
+    /**
+     * Login
+     * @param {*} { username, password }
+     * @returns {*} { id, username, accessToken }
+     */
+    logout = async ({ userId, accessToken }, res) => {
+        try {
+            await tokenRepository.deleteToken({ userId, accessToken });
+            return ResponseHelper.sendSuccess(res, true);
         } catch (e) {
             return ResponseHelper.sendError(res, e);
         }

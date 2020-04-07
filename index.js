@@ -31,5 +31,6 @@ Mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.databas
     useUnifiedTopology: true,
     useFindAndModify: false,
 });
+Mongoose.set('debug', true);
 
 module.exports = app;

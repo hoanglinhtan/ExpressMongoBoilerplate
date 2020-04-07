@@ -1,22 +1,21 @@
-import AppLogger from '../helpers/AppLogger';
-import User from '../models/User';
+import UserModel from '../models/User';
 
 export class UserRepository {
     /**
      * Create User
-     * @param {*} {}
-     * @returns {*} User Object
+     * @param {User} { username, password }
+     * @returns {User} { _id, username, password }
      */
-    create = () => {
-        return {};
-    };
+    async create(data) {
+        return await UserModel.create(data);
+    }
 
     /**
      * Get User By Condition
-     * @param {*} {}
-     * @returns {*} User Object
+     * @param {*} { condition, isLean }
+     * @returns {User} { _id, username, password }
      */
-    getUser = () => {
-        return {};
-    };
+    async getUser(condition, isLean = true) {
+        return await UserModel.findOne(condition).lean(isLean);
+    }
 }

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { authController } from '../controllers';
 import { authValidator } from '../validators';
+import AuthMiddleware from '../middlewares/AuthMiddleware';
 
 const router = Router();
 
@@ -24,7 +25,7 @@ router.route('/login').post([authValidator.validateLogin], authController.login)
  *
  * @success {Boolean} { true/false }
  */
-router.route('/logout').get();
+router.route('/logout').get([AuthMiddleware.verifyToken], authController.logout);
 
 /**
  * @endpoint /auth/register

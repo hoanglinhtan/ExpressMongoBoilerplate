@@ -1,14 +1,13 @@
-import Superman from 'lodash';
 import Joi from 'joi';
 import ResponseHelper from '../helpers/ResponseHelper';
 
 export default class AuthValidator {
     validateRegister = ({ body }, res, next) => {
-        const data = Superman.pick(body, ['username', 'password']);
+        const { username, password } = body;
         const result = Joi.object({
             username: Joi.string().email().required().error(new Error('USERNAME_INVALID_ERROR')),
             password: Joi.string().min(6).max(24).error(new Error('PASSWORD_INVALID_ERROR')),
-        }).validate(data);
+        }).validate({ username, password });
         if (result.error) {
             return ResponseHelper.sendError(res, result.error.message);
         }
@@ -16,7 +15,7 @@ export default class AuthValidator {
     };
 
     validateLogin = ({ body }, res, next) => {
-        const validateData = Superman.pick(body, ['username', 'password']);
+        const { username, password } = body;
         const result = Joi.object({
             username: Joi.string().email().required().error(new Error('USERNAME_INVALID_ERROR')),
             password: Joi.string()
@@ -24,7 +23,7 @@ export default class AuthValidator {
                 .max(24)
                 .required()
                 .error(new Error('PASSWORD_INVALID_ERROR')),
-        }).validate(validateData);
+        }).validate({ username, password });
         if (result.error) {
             return ResponseHelper.sendError(res, result.error);
         }

@@ -18,6 +18,10 @@ const DB_PASS = FS.readFileSync(Path.resolve(__dirname, 'credentials', 'DB_PASS'
     encoding: 'utf-8',
 });
 
+const JWT_KEY = FS.readFileSync(Path.resolve(__dirname, 'credentials', 'JWT.KEY'), {
+    encoding: 'utf-8',
+});
+
 module.exports = {
     port: process.env.PORT,
     env: process.env.NODE_ENV,
@@ -29,5 +33,6 @@ module.exports = {
         user: DB_USER,
         pass: DB_PASS,
     },
+    jwtKey: JWT_KEY,
     whiteListConfig: FS.readJsonSync(Path.resolve(__dirname, 'white-list.json')),
 };
