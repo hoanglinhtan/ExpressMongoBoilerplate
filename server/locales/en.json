@@ -1,0 +1,10 @@
+{
+	"INTERNAL_SERVER_ERROR": "Oops. Something went wrong.",
+	"EMAIL_EXISTED_ERROR": "Email is already existed",
+	"EMAIL_NOT_FOUND_ERROR": "Email is not found",
+	"PASSWORD_INCORRECT_ERROR": "Password doesn't match",
+	"INVALID_TOKEN": "Token is invalid",
+	"ID_INVALID_ERROR": "Id is invalid",
+	"USERNAME_INVALID_ERROR": "Username is invalid",
+	"PASSWORD_INVALID_ERROR": "Password is invalid"
+}
