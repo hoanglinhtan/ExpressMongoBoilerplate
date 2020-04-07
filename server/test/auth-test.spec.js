@@ -13,7 +13,7 @@ describe('Auth', () => {
         Chai.request(App)
             .post('/api/auth/register')
             .send({
-                username: `init@company.com`,
+                username: `testing1@company.com`,
                 password: 'abc123',
             })
             .end(() => {

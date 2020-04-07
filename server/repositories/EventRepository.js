@@ -1,48 +1,56 @@
-import AppLogger from '../helpers/AppLogger';
 import Event from '../models/Event';
 
 export class EventRepository {
     /**
      * Get Event
-     * @param {*}  {}
+     * @param {*}  { condition, select, isLean }
      * @returns {*} Event
      */
-    getEvent = async () => {
-        return {};
-    };
+    async getEvent({ condition, select, isLean }) {
+        return await Event.findOne(condition || {}, select || {}).lean(isLean);
+    }
 
     /**
      * Get Events
-     * @param {*} {  }
+     * @param {*} { condition, select, sort, skip, limit, isLean }
      * @returns {Array} Event[]
      */
-    getEvents = async () => {
-        return {};
-    };
+    async getEvents({ condition, select, sort, skip, limit, isLean = true }) {
+        return await Promise.all([
+            Event.countDocuments(condition || {}),
+            Event.find(condition || {})
+                .select(select || {})
+                .sort(sort || {})
+                .skip(skip || 0)
+                .limit(limit || 10)
+                .lean(isLean),
+        ]);
+    }
 
     /**
      * Create New Event
-     * @param {*} {}
+     * @param {*} { data }
      * @returns {*} Event
      */
-    create = async () => {
-        return {};
-    };
+    async create(data) {
+        const event = new Event(data);
+        return await event.save(data);
+    }
 
     /**
      * Update Event
-     * @param {*} {}
+     * @param {*} { id, data }
      * @returns {*} Event
      */
-    update = async () => {
-        return {};
-    };
+    async update(id, data) {
+        return await Event.findByIdAndUpdate(id, data, { new: true });
+    }
 
     /**
      * Delete Event By Condition
      * @param {*} condition
      */
-    delete = async () => {
-        return {};
-    };
+    async delete(condition) {
+        return await Event.deleteOne(condition);
+    }
 }

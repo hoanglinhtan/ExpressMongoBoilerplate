@@ -1,3 +1,7 @@
+# Testing
+
+https://api.travis-ci.com/hoanglinhtan/ExpressMongoBoilerplate.svg
+
 # Express 4x
 
 ExpressJS CRUD boilerplate with Mongoose for scalable projects.
