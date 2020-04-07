@@ -3,7 +3,13 @@ node_js:
     - 9
 services:
     - mongodb
+before_install:
+    - cp ./server/config/auth-config.json.example ./server/config/auth-config.json
+    - cp ./server/config/database-config.json.example ./server/config/database-config.json
+    - cp ./server/config/jwt.key.example ./server/config/jwt.key
+    - cp ./server/config/logger-config.json.example ./server/config/logger-config.json
+    - cp ./server/config/white-list.json.example ./server/config/white-list.json
 install:
     - npm install
 script:
-    - NODE_ENV=test npm run test
+    - NODE_ENV=test npm test
