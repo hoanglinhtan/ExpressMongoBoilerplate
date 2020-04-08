@@ -41,7 +41,7 @@
     "scripts": {
         "format": "prettier --write \"server/**/*.js\"",
         "build": "babel --out-dir dist server",
-        "test": "mocha ./server/test/*.js --timeout 15000",
+        "test": "mocha ./server/test/*.js --timeout 15000 --exit",
         "start": "nodemon ./bin/www",
         "debug": "babel-node debug ./bin/www",
         "pm2:start": "pm2 start ./bin/www --name event-service",

@@ -13,7 +13,9 @@ export default class AuthController {
     register = async (req, res) => {
         try {
             const { username, password } = req.body;
-            const existedUser = await userRepository.getUser({ username });
+            const existedUser = await userRepository.getOne({
+                condition: { username },
+            });
             if (existedUser) {
                 throw Error('EMAIL_EXISTED_ERROR');
             }
