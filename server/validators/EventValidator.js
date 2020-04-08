@@ -17,10 +17,10 @@ export default class EventValidator {
 
     validateUpdateEvent = ({ body }, res, next) => {
         const result = Joi.object({
-            name: Joi.string().min(1).max(1000).required().error(new Error('EVENT_NAME_INVALID')),
-            description: Joi.string().required().error(new Error('EVENT_DESCRIPTION_INVALID')),
-            startDate: Joi.string().isoDate().required().error(new Error('START_DATE_INVALID')),
-            dueDate: Joi.string().isoDate().required().error(new Error('DUE_DATE_INVALID')),
+            name: Joi.string().min(1).max(1000).error(new Error('EVENT_NAME_INVALID')),
+            description: Joi.string().error(new Error('EVENT_DESCRIPTION_INVALID')),
+            startDate: Joi.string().isoDate().error(new Error('START_DATE_INVALID')),
+            dueDate: Joi.string().isoDate().error(new Error('DUE_DATE_INVALID')),
         }).validate(body);
         if (result.error) {
             return ResponseHelper.sendError(res, result.error);
@@ -53,7 +53,7 @@ export default class EventValidator {
     validateDeleteEvent = ({ params }, res, next) => {
         const result = Joi.object({
             id: Joi.string().required().error(new Error('ID_INVALID')),
-        }).validate(params);
+        }).validate({ id: params.id });
         if (result.error) {
             return ResponseHelper.sendError(res, result.error);
         }

@@ -23,7 +23,7 @@ export default class EventController {
                 skip: (page - 1) * parseInt(limit),
                 limit: parseInt(limit),
             };
-            const [total, events] = await eventRepository.getEvents(options);
+            const [total, events] = await eventRepository.getManyAndCount(options);
             return ResponseHelper.sendSuccess(res, {
                 data: events,
                 pageInfo: {
@@ -44,7 +44,7 @@ export default class EventController {
     getEvent = async ({ userId, params }, res) => {
         try {
             const { id } = params;
-            const event = await eventRepository.getEvent({
+            const event = await eventRepository.getOne({
                 condition: {
                     _id: id,
                     userId,
@@ -68,7 +68,7 @@ export default class EventController {
         try {
             const { name, description, startDate, dueDate } = body;
 
-            if (startDate > dueDate) {
+            if (Moment(startDate).diff(dueDate, 'minutes') > 0) {
                 throw Error('START_DATE_GREATER_THAN_DUE_DATE_ERROR');
             }
 
@@ -91,14 +91,13 @@ export default class EventController {
      * @param {*} {}
      * @returns {*} Event
      */
-    updateEvent = async ({ userId, body }, res) => {
+    updateEvent = async ({ userId, params, body }, res) => {
         try {
-            const { id, startDate, dueDate } = body;
-            const event = await eventRepository.getEvent({ condition: { _id: id, userId } });
+            const { id } = params;
+            const { startDate, dueDate } = body;
 
-            if (!event) {
-                throw Error('EVENT_NOT_FOUND_ERROR');
-            }
+            const event = await this.validateEvent(id, userId);
+
             if (
                 Moment(startDate || event.startDate).diff(dueDate || event.dueDate, 'minutes') > 0
             ) {
@@ -106,13 +105,14 @@ export default class EventController {
             }
 
             const updateData = {};
+
             ['name', 'description', 'startDate', 'dueDate'].forEach((field) => {
                 if (body[field]) {
                     updateData[field] = body[field];
                 }
             });
 
-            const updatedEvent = eventRepository.updateById({
+            const updatedEvent = await eventRepository.update({
                 id,
                 updateData,
             });
@@ -129,11 +129,19 @@ export default class EventController {
     deleteEvent = async ({ userId, params }, res) => {
         try {
             const { id } = params;
+            await this.validateEvent(id, userId);
             const isDeleted = await eventRepository.delete({ _id: id, userId });
-
             return ResponseHelper.sendSuccess(res, isDeleted ? true : false);
         } catch (e) {
             return ResponseHelper.sendError(res, e);
         }
     };
+
+    async validateEvent(id, userId) {
+        const event = await eventRepository.getOne({ condition: { _id: id, userId } });
+        if (!event) {
+            throw Error('EVENT_NOT_FOUND_ERROR');
+        }
+        return event;
+    }
 }

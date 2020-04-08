@@ -8,7 +8,9 @@ const AUTHORIZATION_KEY = 'x-access-token';
 
 export default class JwtHelper {
     static authenticate = async ({ username, password }) => {
-        const user = await userRepository.getUser({ username });
+        const user = await userRepository.getOne({
+            condition: { username },
+        });
         if (user) {
             const isMatched = await Bcrypt.compare(password, user.password);
             if (!isMatched) {
