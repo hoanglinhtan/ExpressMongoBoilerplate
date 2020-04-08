@@ -16,7 +16,7 @@ const router = Router();
  *
  * @success {Array}
  */
-router.route('/').get(eventController.getEvents);
+router.route('/').get([eventValidator.validateGetEvents], eventController.getEvents);
 
 /**
  * @endpoint /events/:id

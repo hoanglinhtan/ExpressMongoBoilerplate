@@ -7,11 +7,9 @@ const schema = new Mongoose.Schema(
         description: String,
         startDate: {
             type: Date,
-            default: Date.now,
         },
         dueDate: {
             type: Date,
-            default: Date.now,
         },
     },
     {

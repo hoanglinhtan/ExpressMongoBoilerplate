@@ -9,9 +9,11 @@ const verifyToken = async (req, res, next) => {
             throw new Error('TOKEN_NOT_FOUND_ERROR');
         } else {
             const decodeToken = JwtHelper.verifyToken(accessToken);
-            const savedToken = await tokenRepository.getToken({
-                userId: decodeToken.uid,
-                accessToken,
+            const savedToken = await tokenRepository.getOne({
+                condition: {
+                    userId: decodeToken.uid,
+                    accessToken,
+                },
             });
             if (!savedToken) {
                 throw new Error('USER_NOT_FOUND_ERROR');
